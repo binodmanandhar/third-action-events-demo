@@ -2,7 +2,13 @@ name: Events Demo 1
 on:
   pull_request:
     types: [opened]
+    branches: [main, dev-*, feat/**] # dev-new, dev-this-is-new, # feat/news, feat/neww/button
   workflow_dispatch:
+  push:
+    branches: [main, dev-*, feat/**] # dev-new, dev-this-is-new, # feat/news, feat/neww/button
+    paths-ignore: # Ignore changes to these files
+      - "README.md"
+      - ".github/workflows/demo1.yml"
 jobs:
   deploy:
     runs-on: ubuntu-latest
