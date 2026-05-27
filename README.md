@@ -3,5 +3,5 @@
 #### To skip workflow action
 
 ```
-git commit -m "update file [skip-ci]
+git commit -m "update file [skip-ci]"
 ```
