@@ -1,4 +1,4 @@
-name: Events Demo 1
+name: Events Demo
 on:
   pull_request:
     types: [opened]
@@ -10,6 +10,33 @@ on:
       - "README.md"
       - ".github/workflows/demo1.yml"
 jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm ci
+      - name: Run ESLint
+        run: npm run lint
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install dependencies
+        run: npm ci
+      - name: Run tests
+        run: npm run test
   deploy:
     runs-on: ubuntu-latest
     steps:
@@ -17,11 +44,13 @@ jobs:
         run: echo "${{ toJSON(github.event) }}"
       - name: Get code
         uses: actions/checkout@v4
+      - name: Install Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
       - name: Install dependencies
         run: npm ci
-      - name: Test code
-        run: npm run test
-      - name: Build code
+      - name: Build project
         run: npm run build
       - name: Deploy project
         run: echo "Deploying..."
